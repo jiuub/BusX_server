@@ -15,7 +15,7 @@ import java.io.PrintWriter;
 public class JsonServlet extends HttpServlet {
 
   private JsonService service=new JsonService();
-
+  @Override
   protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     response.setContentType("text/html;charset=utf-8");
     request.setCharacterEncoding("utf-8");
@@ -23,28 +23,29 @@ public class JsonServlet extends HttpServlet {
     PrintWriter out=response.getWriter();
     String jsonString="";
     String action_flag=request.getParameter("action_flag");
+    String buscity=request.getParameter("buscity");
     System.out.println("action_flag: "+action_flag);
     if (action_flag.equals("line_go")){
       String busname=request.getParameter("busname");
       System.out.println(busname+"go");
-      jsonString= JsonTools.createJsonString(service.getListBus(busname,"go"));
+      jsonString= JsonTools.createJsonString(service.getListBus(busname,"go",buscity));
     }else if (action_flag.equals("line_back")){
       String busname=request.getParameter("busname");
       System.out.println(busname+"back");
-      jsonString= JsonTools.createJsonString(service.getListBus(busname,"back"));
+      jsonString= JsonTools.createJsonString(service.getListBus(busname,"back",buscity));
     }else if (action_flag.equals("bus")){
       String station=request.getParameter("station");
       System.out.println(station+"的bus");
-      jsonString= JsonTools.createJsonString(service.getListStation(station));
+      jsonString= JsonTools.createJsonString(service.getListStation(station,buscity));
     }else if (action_flag.equals("bus_detail")){
       String busname=request.getParameter("busname");
-      jsonString= JsonTools.createJsonString(service.getSimpleBus(busname));
+      jsonString= JsonTools.createJsonString(service.getSimpleBus(busname,buscity));
     }
     out.println(jsonString);
     out.flush();
     out.close();
   }
-
+  @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     this.doPost(request,response);
   }

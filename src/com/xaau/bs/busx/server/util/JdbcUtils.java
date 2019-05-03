@@ -187,7 +187,8 @@ public class JdbcUtils {
    * @throws SQLException
    */
   public boolean updateByPreparedStatement(String sql, List<Object> params) {
-    int result = -1;// 表示当用户执行添加删除和修改的时候所影响数据库的行数
+    // 表示当用户执行添加删除和修改的时候所影响数据库的行数
+    int result = -1;
     try {
       pstmt = conn.prepareStatement(sql);
       int index = 1;

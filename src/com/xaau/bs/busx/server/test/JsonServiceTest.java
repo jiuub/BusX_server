@@ -10,7 +10,7 @@ public class JsonServiceTest {
   public void getListBus() {
     String msg="";
     JsonService service=new JsonService();
-    msg= JsonTools.createJsonString(service.getListStation("土门"));
+    msg= JsonTools.createJsonString(service.getListStation("土门","西安"));
     System.out.println(msg);
   }
 }

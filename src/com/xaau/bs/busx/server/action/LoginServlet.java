@@ -14,6 +14,7 @@ import java.io.PrintWriter;
 
 @WebServlet(name = "LoginServlet")
 public class LoginServlet extends HttpServlet {
+  @Override
   protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     request.getContextPath();
     response.setContentType("text/html;charset=utf-8");
@@ -41,6 +42,7 @@ public class LoginServlet extends HttpServlet {
     System.out.println("username = " + username + " pswd = " + password);
   }
 
+  @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     this.doPost(request,response);
   }

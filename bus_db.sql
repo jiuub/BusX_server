@@ -11,7 +11,7 @@
  Target Server Version : 80015
  File Encoding         : 65001
 
- Date: 11/03/2019 22:56:39
+ Date: 03/05/2019 22:59:24
 */
 
 SET NAMES utf8mb4;
@@ -22,11 +22,19 @@ SET FOREIGN_KEY_CHECKS = 0;
 -- ----------------------------
 DROP TABLE IF EXISTS `admin`;
 CREATE TABLE `admin`  (
-  `adminID` int(11) NOT NULL AUTO_INCREMENT,
-  `admin` varchar(11) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `pwd` varchar(11) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  PRIMARY KEY (`adminID`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `username` varchar(11) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `password` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `role` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE INDEX `Index_name`(`username`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of admin
+-- ----------------------------
+INSERT INTO `admin` VALUES (1, 'admin', '$2a$10$s.q4m2.lfkLKZaI9RQcp6OiEE6wb8MjAUxCpzCCXniZDQQLgV/KNy', 'ADMIN');
+INSERT INTO `admin` VALUES (8, '12345', '$2a$10$Bjk/YLAA4XgR13FK19.2vuRQHmlC4OY8NDodle/5TWqDZe3qUSRci', 'ADMIN');
 
 -- ----------------------------
 -- Table structure for bus
@@ -41,7 +49,7 @@ CREATE TABLE `bus`  (
   `busEnd` time(0) NULL DEFAULT NULL COMMENT '末班车',
   PRIMARY KEY (`busID`) USING BTREE,
   UNIQUE INDEX `busNameOnly`(`busName`, `busCity`) USING BTREE COMMENT '城市中的公交车名唯一'
-) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 34 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of bus
@@ -57,109 +65,108 @@ CREATE TABLE `line`  (
   `busID` int(11) NOT NULL COMMENT '线路id',
   `stationID` int(11) NOT NULL COMMENT '站点id',
   `direction` varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '方向',
-  `sta_Num` int(16) NOT NULL COMMENT '站点总数',
   `sta_No` int(16) NOT NULL COMMENT '第几个站点',
   UNIQUE INDEX `lineID`(`busID`, `stationID`, `direction`) USING BTREE,
   INDEX `fk_line_bus_1`(`busID`) USING BTREE,
   INDEX `fk_line_station_1`(`stationID`) USING BTREE,
-  CONSTRAINT `fk_line_bus_1` FOREIGN KEY (`busID`) REFERENCES `bus` (`busID`) ON DELETE RESTRICT ON UPDATE CASCADE,
+  CONSTRAINT `fk_line_bus_1` FOREIGN KEY (`busID`) REFERENCES `bus` (`busID`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_line_station_1` FOREIGN KEY (`stationID`) REFERENCES `station` (`stationID`) ON DELETE RESTRICT ON UPDATE CASCADE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of line
 -- ----------------------------
-INSERT INTO `line` VALUES (1, 1, 'back', 20, 20);
-INSERT INTO `line` VALUES (1, 1, 'go', 20, 1);
-INSERT INTO `line` VALUES (1, 2, 'back', 20, 19);
-INSERT INTO `line` VALUES (1, 2, 'go', 20, 2);
-INSERT INTO `line` VALUES (1, 3, 'back', 20, 18);
-INSERT INTO `line` VALUES (1, 3, 'go', 20, 3);
-INSERT INTO `line` VALUES (1, 4, 'back', 20, 17);
-INSERT INTO `line` VALUES (1, 4, 'go', 20, 4);
-INSERT INTO `line` VALUES (1, 5, 'back', 20, 16);
-INSERT INTO `line` VALUES (1, 5, 'go', 20, 5);
-INSERT INTO `line` VALUES (1, 6, 'go', 20, 6);
-INSERT INTO `line` VALUES (1, 7, 'back', 20, 14);
-INSERT INTO `line` VALUES (1, 7, 'go', 20, 7);
-INSERT INTO `line` VALUES (1, 8, 'back', 20, 13);
-INSERT INTO `line` VALUES (1, 8, 'go', 20, 8);
-INSERT INTO `line` VALUES (1, 9, 'go', 20, 9);
-INSERT INTO `line` VALUES (1, 10, 'back', 20, 11);
-INSERT INTO `line` VALUES (1, 10, 'go', 20, 10);
-INSERT INTO `line` VALUES (1, 11, 'back', 20, 10);
-INSERT INTO `line` VALUES (1, 11, 'go', 20, 11);
-INSERT INTO `line` VALUES (1, 12, 'back', 20, 9);
-INSERT INTO `line` VALUES (1, 12, 'go', 20, 12);
-INSERT INTO `line` VALUES (1, 13, 'back', 20, 8);
-INSERT INTO `line` VALUES (1, 13, 'go', 20, 13);
-INSERT INTO `line` VALUES (1, 14, 'back', 20, 7);
-INSERT INTO `line` VALUES (1, 14, 'go', 20, 14);
-INSERT INTO `line` VALUES (1, 15, 'back', 20, 6);
-INSERT INTO `line` VALUES (1, 15, 'go', 20, 15);
-INSERT INTO `line` VALUES (1, 16, 'back', 20, 5);
-INSERT INTO `line` VALUES (1, 16, 'go', 20, 16);
-INSERT INTO `line` VALUES (1, 17, 'back', 20, 4);
-INSERT INTO `line` VALUES (1, 17, 'go', 20, 17);
-INSERT INTO `line` VALUES (1, 18, 'back', 20, 3);
-INSERT INTO `line` VALUES (1, 18, 'go', 20, 18);
-INSERT INTO `line` VALUES (1, 19, 'back', 20, 2);
-INSERT INTO `line` VALUES (1, 19, 'go', 20, 19);
-INSERT INTO `line` VALUES (1, 20, 'back', 20, 1);
-INSERT INTO `line` VALUES (1, 20, 'go', 20, 20);
-INSERT INTO `line` VALUES (1, 30, 'back', 20, 12);
-INSERT INTO `line` VALUES (1, 33, 'back', 20, 15);
-INSERT INTO `line` VALUES (2, 4, 'back', 25, 17);
-INSERT INTO `line` VALUES (2, 4, 'go', 26, 10);
-INSERT INTO `line` VALUES (2, 5, 'back', 25, 16);
-INSERT INTO `line` VALUES (2, 5, 'go', 26, 11);
-INSERT INTO `line` VALUES (2, 7, 'back', 25, 14);
-INSERT INTO `line` VALUES (2, 7, 'go', 26, 13);
-INSERT INTO `line` VALUES (2, 8, 'back', 25, 13);
-INSERT INTO `line` VALUES (2, 8, 'go', 26, 14);
-INSERT INTO `line` VALUES (2, 10, 'back', 25, 11);
-INSERT INTO `line` VALUES (2, 10, 'go', 26, 16);
-INSERT INTO `line` VALUES (2, 11, 'back', 25, 10);
-INSERT INTO `line` VALUES (2, 11, 'go', 26, 17);
-INSERT INTO `line` VALUES (2, 12, 'back', 25, 9);
-INSERT INTO `line` VALUES (2, 12, 'go', 26, 18);
-INSERT INTO `line` VALUES (2, 13, 'back', 25, 8);
-INSERT INTO `line` VALUES (2, 13, 'go', 26, 19);
-INSERT INTO `line` VALUES (2, 14, 'back', 25, 7);
-INSERT INTO `line` VALUES (2, 14, 'go', 26, 20);
-INSERT INTO `line` VALUES (2, 15, 'back', 25, 6);
-INSERT INTO `line` VALUES (2, 15, 'go', 26, 21);
-INSERT INTO `line` VALUES (2, 16, 'back', 25, 5);
-INSERT INTO `line` VALUES (2, 16, 'go', 26, 22);
-INSERT INTO `line` VALUES (2, 17, 'back', 25, 4);
-INSERT INTO `line` VALUES (2, 17, 'go', 26, 23);
-INSERT INTO `line` VALUES (2, 18, 'back', 25, 3);
-INSERT INTO `line` VALUES (2, 18, 'go', 26, 24);
-INSERT INTO `line` VALUES (2, 21, 'back', 25, 25);
-INSERT INTO `line` VALUES (2, 21, 'go', 26, 1);
-INSERT INTO `line` VALUES (2, 22, 'back', 25, 24);
-INSERT INTO `line` VALUES (2, 22, 'go', 26, 2);
-INSERT INTO `line` VALUES (2, 23, 'back', 25, 23);
-INSERT INTO `line` VALUES (2, 23, 'go', 26, 3);
-INSERT INTO `line` VALUES (2, 24, 'back', 25, 22);
-INSERT INTO `line` VALUES (2, 24, 'go', 26, 4);
-INSERT INTO `line` VALUES (2, 25, 'back', 25, 21);
-INSERT INTO `line` VALUES (2, 25, 'go', 26, 5);
-INSERT INTO `line` VALUES (2, 26, 'go', 26, 6);
-INSERT INTO `line` VALUES (2, 27, 'back', 25, 20);
-INSERT INTO `line` VALUES (2, 27, 'go', 26, 7);
-INSERT INTO `line` VALUES (2, 28, 'back', 25, 19);
-INSERT INTO `line` VALUES (2, 28, 'go', 26, 8);
-INSERT INTO `line` VALUES (2, 29, 'back', 25, 18);
-INSERT INTO `line` VALUES (2, 29, 'go', 26, 9);
-INSERT INTO `line` VALUES (2, 30, 'back', 25, 12);
-INSERT INTO `line` VALUES (2, 30, 'go', 26, 15);
-INSERT INTO `line` VALUES (2, 31, 'back', 25, 2);
-INSERT INTO `line` VALUES (2, 31, 'go', 26, 25);
-INSERT INTO `line` VALUES (2, 32, 'back', 25, 1);
-INSERT INTO `line` VALUES (2, 32, 'go', 26, 26);
-INSERT INTO `line` VALUES (2, 33, 'back', 25, 15);
-INSERT INTO `line` VALUES (2, 33, 'go', 26, 12);
+INSERT INTO `line` VALUES (1, 1, 'back', 20);
+INSERT INTO `line` VALUES (1, 1, 'go', 1);
+INSERT INTO `line` VALUES (1, 2, 'back', 19);
+INSERT INTO `line` VALUES (1, 2, 'go', 2);
+INSERT INTO `line` VALUES (1, 3, 'back', 18);
+INSERT INTO `line` VALUES (1, 3, 'go', 3);
+INSERT INTO `line` VALUES (1, 4, 'back', 17);
+INSERT INTO `line` VALUES (1, 4, 'go', 4);
+INSERT INTO `line` VALUES (1, 5, 'back', 16);
+INSERT INTO `line` VALUES (1, 5, 'go', 5);
+INSERT INTO `line` VALUES (1, 6, 'go', 6);
+INSERT INTO `line` VALUES (1, 7, 'back', 14);
+INSERT INTO `line` VALUES (1, 7, 'go', 7);
+INSERT INTO `line` VALUES (1, 8, 'back', 13);
+INSERT INTO `line` VALUES (1, 8, 'go', 8);
+INSERT INTO `line` VALUES (1, 9, 'go', 9);
+INSERT INTO `line` VALUES (1, 10, 'back', 11);
+INSERT INTO `line` VALUES (1, 10, 'go', 10);
+INSERT INTO `line` VALUES (1, 11, 'back', 10);
+INSERT INTO `line` VALUES (1, 11, 'go', 11);
+INSERT INTO `line` VALUES (1, 12, 'back', 9);
+INSERT INTO `line` VALUES (1, 12, 'go', 12);
+INSERT INTO `line` VALUES (1, 13, 'back', 8);
+INSERT INTO `line` VALUES (1, 13, 'go', 13);
+INSERT INTO `line` VALUES (1, 14, 'back', 7);
+INSERT INTO `line` VALUES (1, 14, 'go', 14);
+INSERT INTO `line` VALUES (1, 15, 'back', 6);
+INSERT INTO `line` VALUES (1, 15, 'go', 15);
+INSERT INTO `line` VALUES (1, 16, 'back', 5);
+INSERT INTO `line` VALUES (1, 16, 'go', 16);
+INSERT INTO `line` VALUES (1, 17, 'back', 4);
+INSERT INTO `line` VALUES (1, 17, 'go', 17);
+INSERT INTO `line` VALUES (1, 18, 'back', 3);
+INSERT INTO `line` VALUES (1, 18, 'go', 18);
+INSERT INTO `line` VALUES (1, 19, 'back', 2);
+INSERT INTO `line` VALUES (1, 19, 'go', 19);
+INSERT INTO `line` VALUES (1, 20, 'back', 1);
+INSERT INTO `line` VALUES (1, 20, 'go', 20);
+INSERT INTO `line` VALUES (1, 30, 'back', 12);
+INSERT INTO `line` VALUES (1, 33, 'back', 15);
+INSERT INTO `line` VALUES (2, 4, 'back', 17);
+INSERT INTO `line` VALUES (2, 4, 'go', 10);
+INSERT INTO `line` VALUES (2, 5, 'back', 16);
+INSERT INTO `line` VALUES (2, 5, 'go', 11);
+INSERT INTO `line` VALUES (2, 7, 'back', 14);
+INSERT INTO `line` VALUES (2, 7, 'go', 13);
+INSERT INTO `line` VALUES (2, 8, 'back', 13);
+INSERT INTO `line` VALUES (2, 8, 'go', 14);
+INSERT INTO `line` VALUES (2, 10, 'back', 11);
+INSERT INTO `line` VALUES (2, 10, 'go', 16);
+INSERT INTO `line` VALUES (2, 11, 'back', 10);
+INSERT INTO `line` VALUES (2, 11, 'go', 17);
+INSERT INTO `line` VALUES (2, 12, 'back', 9);
+INSERT INTO `line` VALUES (2, 12, 'go', 18);
+INSERT INTO `line` VALUES (2, 13, 'back', 8);
+INSERT INTO `line` VALUES (2, 13, 'go', 19);
+INSERT INTO `line` VALUES (2, 14, 'back', 7);
+INSERT INTO `line` VALUES (2, 14, 'go', 20);
+INSERT INTO `line` VALUES (2, 15, 'back', 6);
+INSERT INTO `line` VALUES (2, 15, 'go', 21);
+INSERT INTO `line` VALUES (2, 16, 'back', 5);
+INSERT INTO `line` VALUES (2, 16, 'go', 22);
+INSERT INTO `line` VALUES (2, 17, 'back', 4);
+INSERT INTO `line` VALUES (2, 17, 'go', 23);
+INSERT INTO `line` VALUES (2, 18, 'back', 3);
+INSERT INTO `line` VALUES (2, 18, 'go', 24);
+INSERT INTO `line` VALUES (2, 21, 'back', 25);
+INSERT INTO `line` VALUES (2, 21, 'go', 1);
+INSERT INTO `line` VALUES (2, 22, 'back', 24);
+INSERT INTO `line` VALUES (2, 22, 'go', 2);
+INSERT INTO `line` VALUES (2, 23, 'back', 23);
+INSERT INTO `line` VALUES (2, 23, 'go', 3);
+INSERT INTO `line` VALUES (2, 24, 'back', 22);
+INSERT INTO `line` VALUES (2, 24, 'go', 4);
+INSERT INTO `line` VALUES (2, 25, 'back', 21);
+INSERT INTO `line` VALUES (2, 25, 'go', 5);
+INSERT INTO `line` VALUES (2, 26, 'go', 6);
+INSERT INTO `line` VALUES (2, 27, 'back', 20);
+INSERT INTO `line` VALUES (2, 27, 'go', 7);
+INSERT INTO `line` VALUES (2, 28, 'back', 19);
+INSERT INTO `line` VALUES (2, 28, 'go', 8);
+INSERT INTO `line` VALUES (2, 29, 'back', 18);
+INSERT INTO `line` VALUES (2, 29, 'go', 9);
+INSERT INTO `line` VALUES (2, 30, 'back', 12);
+INSERT INTO `line` VALUES (2, 30, 'go', 15);
+INSERT INTO `line` VALUES (2, 31, 'back', 2);
+INSERT INTO `line` VALUES (2, 31, 'go', 25);
+INSERT INTO `line` VALUES (2, 32, 'back', 1);
+INSERT INTO `line` VALUES (2, 32, 'go', 26);
+INSERT INTO `line` VALUES (2, 33, 'back', 15);
+INSERT INTO `line` VALUES (2, 33, 'go', 12);
 
 -- ----------------------------
 -- Table structure for state
@@ -174,7 +181,7 @@ CREATE TABLE `state`  (
   PRIMARY KEY (`stateID`) USING BTREE,
   INDEX `busID`(`busID`) USING BTREE,
   CONSTRAINT `fk_state_bus_1` FOREIGN KEY (`busID`) REFERENCES `bus` (`busID`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for station
@@ -188,11 +195,12 @@ CREATE TABLE `station`  (
   `sta_Lat` decimal(10, 7) NULL DEFAULT NULL COMMENT '纬度',
   PRIMARY KEY (`stationID`) USING BTREE,
   UNIQUE INDEX `sta_NameOnly`(`sta_Name`, `sta_City`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 35 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 74 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of station
 -- ----------------------------
+INSERT INTO `station` VALUES (0, '暂无信息', '暂无信息', NULL, NULL);
 INSERT INTO `station` VALUES (1, '火车站', '西安', NULL, NULL);
 INSERT INTO `station` VALUES (2, '五路口', '西安', NULL, NULL);
 INSERT INTO `station` VALUES (3, '民乐园', '西安', NULL, NULL);
@@ -226,6 +234,8 @@ INSERT INTO `station` VALUES (30, '西门', '西安', NULL, NULL);
 INSERT INTO `station` VALUES (31, '锅炉厂', '西安', NULL, NULL);
 INSERT INTO `station` VALUES (32, '起重机厂', '西安', NULL, NULL);
 INSERT INTO `station` VALUES (33, '钟楼', '西安', NULL, NULL);
+INSERT INTO `station` VALUES (43, 'test1', '北京', NULL, NULL);
+INSERT INTO `station` VALUES (51, 'test2', '西安', NULL, NULL);
 
 -- ----------------------------
 -- Table structure for user
@@ -237,18 +247,17 @@ CREATE TABLE `user`  (
   `password` varchar(12) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   PRIMARY KEY (`userID`) USING BTREE,
   UNIQUE INDEX `index_userName`(`userName`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 10025 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of user
 -- ----------------------------
-INSERT INTO `user` VALUES (1, '123@123.com', '12345678');
-INSERT INTO `user` VALUES (7, 'z@z.com', 'zxcvbnm');
+INSERT INTO `user` VALUES (10025, 'z@z.cn', '12345678');
 
 -- ----------------------------
 -- View structure for line_view
 -- ----------------------------
 DROP VIEW IF EXISTS `line_view`;
-CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `line_view` AS select `bus`.`busName` AS `busName`,`station`.`sta_Name` AS `sta_Name`,`line`.`direction` AS `direction`,`line`.`sta_No` AS `sta_No` from ((`bus` join `line` on((`line`.`busID` = `bus`.`busID`))) join `station` on((`line`.`stationID` = `station`.`stationID`))) order by `bus`.`busID`,`line`.`direction` desc,`line`.`sta_No`;
+CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `line_view` AS select `bus`.`busName` AS `busName`,`station`.`sta_Name` AS `sta_Name`,`line`.`direction` AS `direction`,`line`.`sta_No` AS `sta_No`,`bus`.`busCity` AS `busCity` from ((`bus` join `line` on((`line`.`busID` = `bus`.`busID`))) join `station` on((`line`.`stationID` = `station`.`stationID`))) order by `bus`.`busID`,`line`.`direction` desc,`line`.`sta_No`;
 
 SET FOREIGN_KEY_CHECKS = 1;
